@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FlightRandomizer
 
-## Getting Started
+Small Next.js application that can randomly select a flight of a specific airline departing from a selected airport.
 
-First, run the development server:
+## How to run
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Run it like any other Next.js application, i.e. `npm install` and `npm run dev`. The application doesn't have any dependencies of databases or the like.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Airports
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Enter ICAO code (4 letters) of the airport in the airport input. The application will indicate to user if the code is incorrect (or not found in FlightRadar24 systems).
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Flights
 
-## Learn More
+The application finds all the flights leaving in the next 6 hours and as the flights are received in batches of 100 there might be some flights which take off later. However, flights leaving after now + 12 hours are discarded.
 
-To learn more about Next.js, take a look at the following resources:
+## Disclaimer
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The app depends on an unofficial/undocumented API by FlightRadar24.com which could change at any time, breaking the app.
