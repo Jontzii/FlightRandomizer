@@ -1,4 +1,4 @@
-import { Airline } from "@/app/types/airlineTypes";
+import { Airline, Flight } from "@/app/types/airlineTypes";
 import { AirportDetailsResponse } from "@/app/types/fr24Types";
 import { generateRequestForAirportDetails } from "@/app/api/generateRequest";
 import _ from "lodash";
@@ -11,7 +11,7 @@ const generateNowPlusHoursTime = (hours: number) => {
 
 export async function GET(
   request: Request,
-  { params }: { params: { icao: string } }
+  { params }: { params: { icao: string; airline: string } }
 ) {
   if (params.icao.length != 4) {
     return Response.json(
@@ -20,11 +20,18 @@ export async function GET(
     );
   }
 
+  if (params.airline.length != 3) {
+    return Response.json(
+      { error: "Bad Request", message: "Incorrect airline code" },
+      { status: 400 }
+    );
+  }
+
   let page = 1;
   let totalPageNumber = 1;
   const nowPlus6Hours = generateNowPlusHoursTime(6);
   const nowPlus12Hours = generateNowPlusHoursTime(12);
-  const airlines: Airline[] = [];
+  const flights: Flight[] = [];
 
   do {
     const data: AirportDetailsResponse = await generateRequestForAirportDetails(
@@ -78,12 +85,21 @@ export async function GET(
       } while (nowPlus12Hours <= lastDepartureTime);
     }
 
-    departuresInPage.forEach((x) =>
-      airlines.push({
-        name: x.flight.airline.name,
-        icao: x.flight.airline.code.icao,
-      })
-    );
+    departuresInPage.forEach((x) => {
+      if (x.flight.airline.code.icao == params.airline) {
+        // Correct airline
+        flights.push({
+          airline: x.flight.airline.code.icao,
+          flightNumber: x.flight.identification.number.default || "",
+          aircraft: x.flight.aircraft.model.code,
+          departureIcao: params.icao.toUpperCase(),
+          departureTime: x.flight.time.scheduled.departure || -1,
+          arrivalIcao: x.flight.airport.destination.code.icao,
+          arrivalName: x.flight.airport.destination.name,
+          arrivalTime: x.flight.time.scheduled.arrival || -1,
+        });
+      }
+    });
 
     if (nowPlus6Hours < lastDepartureTime) {
       // We have all the flights for the next 6+n hours
@@ -95,9 +111,6 @@ export async function GET(
 
   return Response.json({
     createdAt: new Date().getTime(),
-    results: _.sortBy(
-      _.uniqBy(airlines, (e) => e.icao),
-      (x) => x.icao
-    ),
+    results: _.sortBy(flights, (x) => x.departureTime),
   });
 }
