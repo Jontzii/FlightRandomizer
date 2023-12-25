@@ -18,8 +18,12 @@ Enter ICAO code (4 letters) of the airport in the airport input. The application
 
 ### Flights
 
-The application finds all the flights leaving in the next 6 hours and as the flights are received in batches of 100 there might be some flights which take off later. However, flights leaving after now + 12 hours are discarded.
+The application finds all the flights leaving in the next 3 hours and as the flights are received in batches of 100 there might be some flights which take off later. However, flights leaving after now + 6 hours are discarded from the results.
 
 ## Disclaimer
 
 The app depends on an unofficial/undocumented API by FlightRadar24.com which could change at any time, breaking the app.
+
+## Future ideas
+
+Combine flight query inside the airline API so that only API query needs to be done.

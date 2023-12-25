@@ -1,4 +1,4 @@
-import { Airline, Flight } from "@/app/types/airlineTypes";
+import { Flight } from "@/app/types/airlineTypes";
 import { AirportDetailsResponse } from "@/app/types/fr24Types";
 import { generateRequestForAirportDetails } from "@/app/api/generateRequest";
 import _ from "lodash";
@@ -29,8 +29,8 @@ export async function GET(
 
   let page = 1;
   let totalPageNumber = 1;
-  const nowPlus6Hours = generateNowPlusHoursTime(6);
-  const nowPlus12Hours = generateNowPlusHoursTime(12);
+  const softLimit = generateNowPlusHoursTime(3);
+  const hardLimit = generateNowPlusHoursTime(6);
   const flights: Flight[] = [];
 
   do {
@@ -60,7 +60,7 @@ export async function GET(
     }
 
     // Remove flights until the last one is within 12 hours from now
-    if (nowPlus12Hours <= lastDepartureTime) {
+    if (hardLimit <= lastDepartureTime) {
       do {
         departuresInPage.pop();
 
@@ -82,7 +82,7 @@ export async function GET(
             { status: 500 }
           );
         }
-      } while (nowPlus12Hours <= lastDepartureTime);
+      } while (hardLimit <= lastDepartureTime);
     }
 
     departuresInPage.forEach((x) => {
@@ -101,7 +101,7 @@ export async function GET(
       }
     });
 
-    if (nowPlus6Hours < lastDepartureTime) {
+    if (softLimit < lastDepartureTime) {
       // We have all the flights for the next 6+n hours
       break;
     } else {
