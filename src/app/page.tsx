@@ -1,95 +1,106 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  IconButton,
+  Text,
+  Select,
+  useColorMode,
+  Input,
+  FormErrorMessage,
+} from "@chakra-ui/react";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { Link } from "@chakra-ui/next-js";
+import useSWR from "swr";
+import { ApiResponse } from "./types/apiResponse";
+import { useState } from "react";
+import { AirportBasicData } from "./types/airportTypes";
+import AirportSelection from "./components/airportSelection";
+import { Airline } from "./types/airlineTypes";
+import AirlineSelection from "./components/airlineSelection";
+
+//@ts-expect-error Example taken straigh from docs
+const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
+  const [selectedAirport, setSelectedAirport] = useState<AirportBasicData | null>(null);
+  const [selectedAirline, setSelectedAirline] = useState<Airline | null>(null);
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Box display={"flex"} flexDir={"column"}>
+        <Text
+          bgGradient="linear(to-l, #3300ff, #0084ff)"
+          bgClip="text"
+          fontSize="6xl"
+          fontWeight="extrabold"
+          justifyItems={"center"}
+          textAlign={"center"}
+          pt={4}
+          pb={4}
         >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          Flight randomizer
+        </Text>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+        <Text fontSize={"sm"} fontWeight={"bold"}>
+          You can use this application to randomly select a flight from one
+          airport with a specific airline.
+        </Text>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
+        <AirportSelection params={{selectedAirport, setSelectedAirport}} />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
+        <AirlineSelection params={{selectedAirport, selectedAirline, setSelectedAirline}} />
+
+        <Box>
+          <Button>Randomize</Button>
+        </Box>
+      </Box>
+      <IconButton
+        position={"absolute"}
+        top={4}
+        right={4}
+        onClick={toggleColorMode}
+        aria-label={
+          colorMode === "light" ? "Switch to dark mode" : "Switch to light mode"
+        }
+        icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+      />
+      <Text
+        fontSize="sm"
+        fontWeight={"normal"}
+        position={"absolute"}
+        textAlign={"center"}
+        width={"100%"}
+        bottom={2}
+        left={0}
+      >
+        Made by{" "}
+        <Link
+          href="https://www.github.com/jontzii"
+          rel="noreferrer noopener"
           target="_blank"
-          rel="noopener noreferrer"
+          color="blue.500"
+          _hover={{ color: "blue.600" }}
         >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+          @Jontzii
+        </Link>
+        <br />
+        Utilises data from{" "}
+        <Link
+          href="https://www.flightradar24.com"
+          rel="noreferrer noopener"
+          target="_blank"
+          color="blue.500"
+          _hover={{ color: "blue.600" }}
+        >
+          flightradar24.com
+        </Link>
+      </Text>
+    </>
+  );
 }
