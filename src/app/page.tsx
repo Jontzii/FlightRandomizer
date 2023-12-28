@@ -46,7 +46,6 @@ export default function Home() {
   const resetResultTable = () => {
     setShowResult(false);
     setSelectedFlight(null);
-    setSelectedAirline(null);
   }
 
   const { data, error, isLoading } = useSWR<ApiResponse<Flight[]>, Error>(

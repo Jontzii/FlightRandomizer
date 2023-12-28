@@ -9,6 +9,7 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -66,12 +67,19 @@ export default function AirportSelection({
         }}
       />
       {airportInvalid ? (
-        <FormErrorMessage>Incorrect ICAO code</FormErrorMessage>
+        <FormErrorMessage>Invalid ICAO code</FormErrorMessage>
       ) : (
         <FormHelperText>
-          {params.selectedAirport
-            ? params.selectedAirport.name
-            : "Airport ICAO code"}
+          {params.selectedAirport ? (
+            params.selectedAirport.name
+          ) : (
+            <Link
+              href="https://en.wikipedia.org/wiki/ICAO_airport_code"
+              target="_blank"
+            >
+              Airport ICAO code
+            </Link>
+          )}
         </FormHelperText>
       )}
     </FormControl>
