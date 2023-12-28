@@ -78,12 +78,18 @@ export async function GET(
       } while (hardLimit <= lastDepartureTime);
     }
 
-    departuresInPage.forEach((x) =>
-      airlines.push({
-        name: x.flight.airline.name,
-        icao: x.flight.airline.code.icao,
-      })
-    );
+    if (departuresInPage.length > 0) {
+      departuresInPage.forEach((x) => {
+        const airline = x.flight.airline;
+
+        if (airline) {
+          airlines.push({
+            name: airline.short,
+            icao: airline.code.icao,
+          });
+        }
+      });
+    }
 
     if (softLimit < lastDepartureTime) {
       // We have all the flights for the next 6+n hours
@@ -97,7 +103,7 @@ export async function GET(
     createdAt: new Date().getTime(),
     results: _.sortBy(
       _.uniqBy(airlines, (e) => e.icao),
-      (x) => x.icao
+      (x) => x.name
     ),
   });
 }

@@ -8,6 +8,7 @@ export interface Flight {
   flightNumber: string;
   aircraft: string;
   departureIcao: string;
+  departureName?: string;
   departureTime: number;
   arrivalIcao: string;
   arrivalName: string;

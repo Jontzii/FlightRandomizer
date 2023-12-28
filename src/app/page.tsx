@@ -3,25 +3,20 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  IconButton,
   Text,
-  Select,
-  useColorMode,
-  Input,
-  FormErrorMessage,
 } from "@chakra-ui/react";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
-import { Link } from "@chakra-ui/next-js";
-import useSWR from "swr";
-import { ApiResponse } from "./types/apiResponse";
 import { useState } from "react";
+import useSWR from "swr";
+
 import { AirportBasicData } from "./types/airportTypes";
+import { Airline, Flight } from "./types/airlineTypes";
+import { ApiResponse } from "./types/apiResponse";
+
 import AirportSelection from "./components/airportSelection";
-import { Airline } from "./types/airlineTypes";
 import AirlineSelection from "./components/airlineSelection";
+import ResultComponent from "./components/resultTable";
+import DarkmodeButton from "./components/darkmodeButton";
+import BottomLinks from "./components/bottomLinks";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
@@ -29,7 +24,37 @@ const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 export default function Home() {
   const [selectedAirport, setSelectedAirport] = useState<AirportBasicData | null>(null);
   const [selectedAirline, setSelectedAirline] = useState<Airline | null>(null);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [showResult, setShowResult] = useState(false);
+
+  const handleRandomizeClick = () => {
+    const randomizedFlight = data
+      ? data?.results[Math.floor(Math.random() * data?.results.length)]
+      : null;
+    
+    if (!randomizedFlight) {
+      setSelectedFlight(null);
+      setShowResult(false);
+      return;
+    }
+    
+    randomizedFlight.departureName = selectedAirport?.name;
+    setSelectedFlight(randomizedFlight);
+    setShowResult(true);
+  }
+
+  const resetResultTable = () => {
+    setShowResult(false);
+    setSelectedFlight(null);
+    setSelectedAirline(null);
+  }
+
+  const { data, error, isLoading } = useSWR<ApiResponse<Flight[]>, Error>(
+    selectedAirport && selectedAirline
+      ? `/api/airport/${selectedAirport?.icao}/airline/${selectedAirline?.icao}/flight`
+      : null,
+    fetcher
+  );
 
   return (
     <>
@@ -37,7 +62,7 @@ export default function Home() {
         <Text
           bgGradient="linear(to-l, #3300ff, #0084ff)"
           bgClip="text"
-          fontSize="6xl"
+          fontSize={{ base: "4xl", md: "6xl" }}
           fontWeight="extrabold"
           justifyItems={"center"}
           textAlign={"center"}
@@ -47,60 +72,39 @@ export default function Home() {
           Flight randomizer
         </Text>
 
-        <Text fontSize={"sm"} fontWeight={"bold"}>
+        <Text fontSize={{ base: "xs", md: "sm" }} fontWeight={"bold"}>
           You can use this application to randomly select a flight from one
           airport with a specific airline.
         </Text>
 
-        <AirportSelection params={{selectedAirport, setSelectedAirport}} />
+        <AirportSelection
+          params={{
+            selectedAirport,
+            setSelectedAirport,
+            resetResultTable,
+          }}
+        />
 
-        <AirlineSelection params={{selectedAirport, selectedAirline, setSelectedAirline}} />
+        <AirlineSelection
+          params={{ selectedAirport, selectedAirline, setSelectedAirline }}
+        />
 
         <Box>
-          <Button>Randomize</Button>
+          <Button
+            isDisabled={selectedAirport == null || selectedAirline == null}
+            onClick={handleRandomizeClick}
+          >
+            Randomize
+          </Button>
         </Box>
+
+        {showResult && selectedAirport && selectedAirline && selectedFlight ? (
+          <ResultComponent params={{ selectedFlight }} />
+        ) : null}
       </Box>
-      <IconButton
-        position={"absolute"}
-        top={4}
-        right={4}
-        onClick={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "Switch to dark mode" : "Switch to light mode"
-        }
-        icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-      />
-      <Text
-        fontSize="sm"
-        fontWeight={"normal"}
-        position={"absolute"}
-        textAlign={"center"}
-        width={"100%"}
-        bottom={2}
-        left={0}
-      >
-        Made by{" "}
-        <Link
-          href="https://www.github.com/jontzii"
-          rel="noreferrer noopener"
-          target="_blank"
-          color="blue.500"
-          _hover={{ color: "blue.600" }}
-        >
-          @Jontzii
-        </Link>
-        <br />
-        Utilises data from{" "}
-        <Link
-          href="https://www.flightradar24.com"
-          rel="noreferrer noopener"
-          target="_blank"
-          color="blue.500"
-          _hover={{ color: "blue.600" }}
-        >
-          flightradar24.com
-        </Link>
-      </Text>
+
+      <DarkmodeButton />
+      <BottomLinks />
     </>
   );
 }
