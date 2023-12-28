@@ -1,8 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { AirportBasicData } from "../types/airportTypes";
-import { ApiResponse } from "../types/apiResponse";
+import { AirportBasicDataApi, ApiResponse } from "../types/apiTypes";
 import {
   FormControl,
   FormErrorMessage,
@@ -12,6 +11,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { AirportBasicDataUi } from "../types/uiTypes";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
@@ -20,8 +20,8 @@ export default function AirportSelection({
   params,
 }: {
   params: {
-    selectedAirport: AirportBasicData | null;
-    setSelectedAirport: (val: AirportBasicData | null) => void;
+    selectedAirport: AirportBasicDataUi | null;
+    setSelectedAirport: (val: AirportBasicDataUi | null) => void;
     resetResultTable: () => void;
   };
 }) {
@@ -29,7 +29,7 @@ export default function AirportSelection({
   const [airportInvalid, setAirportInvalid] = useState(false);
 
   const { data, error, isLoading } = useSWR<
-    ApiResponse<AirportBasicData[]>,
+    ApiResponse<AirportBasicDataApi[]>,
     Error
   >("/api/airport", fetcher);
 

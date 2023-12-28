@@ -1,4 +1,4 @@
-import { AirportBasicData } from "@/app/types/airportTypes";
+import { AirportBasicData } from "@/app/types/uiTypes";
 import { AirportsResponse } from "@/app/types/fr24Types";
 import { generateGetRequest } from "../generateRequest";
 

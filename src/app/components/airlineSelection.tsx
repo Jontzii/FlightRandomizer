@@ -1,16 +1,15 @@
 "use client"
 
-import { FormControl, FormHelperText, FormLabel, Select } from "@chakra-ui/react";
-import { AirportBasicData } from "../types/airportTypes";
-import { Airline } from "../types/airlineTypes";
 import useSWR from "swr";
-import { ApiResponse } from "../types/apiResponse";
 import { useState } from "react";
+import { FormControl, FormHelperText, FormLabel, Select } from "@chakra-ui/react";
+import { AirlineUi, AirportBasicDataUi } from "../types/uiTypes";
+import { AirlineApi, ApiResponse } from "../types/apiTypes";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 
-const generateOptions = (airlines?: Airline[]): JSX.Element[] => {
+const generateOptions = (airlines?: AirlineUi[]): JSX.Element[] => {
   if (!airlines || airlines.length === 0) {
     return ([<option key="no-flights">No flights from the airport</option>]);
   }
@@ -33,15 +32,15 @@ export default function AirlineSelection({
   params,
 }: {
   params: {
-    selectedAirport: AirportBasicData | null;
-    selectedAirline: Airline | null;
-    setSelectedAirline: (val: Airline | null) => void;
+    selectedAirport: AirportBasicDataUi | null;
+    selectedAirline: AirlineUi | null;
+    setSelectedAirline: (val: AirlineUi | null) => void;
   };
   }) {
   
   const [selectValue, setSelectValue] = useState<string>("")
   
-  const { data, error, isLoading } = useSWR<ApiResponse<Airline[]>, Error>(
+  const { data, error, isLoading } = useSWR<ApiResponse<AirlineApi[]>, Error>(
     params.selectedAirport
       ? `/api/airport/${params.selectedAirport?.icao}/airline`
       : null,

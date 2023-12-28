@@ -7,7 +7,8 @@ export default function BottomLinks() {
       fontSize="sm"
       fontWeight={"normal"}
       position={"absolute"}
-      textAlign={"center"}
+      textAlign={{ base: "left", md: "center" }}
+      pl={{ base: 2, md: 0 }}
       width={"100%"}
       bottom={2}
       left={0}

@@ -1,9 +1,14 @@
-export interface Airline {
+export interface AirportBasicDataUi {
+  icao: string;
+  name: string;
+}
+
+export interface AirlineUi {
   name: string;
   icao: string;
 }
 
-export interface Flight {
+export interface FlightUi {
   airline: string;
   flightNumber: string;
   aircraft: string;
@@ -13,4 +18,9 @@ export interface Flight {
   arrivalIcao: string;
   arrivalName: string;
   arrivalTime: number;
+}
+
+export interface SettingsModelUi {
+  lowerLimit: string;
+  upperLimit: string;
 }

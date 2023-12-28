@@ -8,23 +8,22 @@ import {
 import { useState } from "react";
 import useSWR from "swr";
 
-import { AirportBasicData } from "./types/airportTypes";
-import { Airline, Flight } from "./types/airlineTypes";
-import { ApiResponse } from "./types/apiResponse";
+import { AirlineUi, AirportBasicDataUi, FlightUi } from "./types/uiTypes";
+import { ApiResponse, FlightApi } from "./types/apiTypes";
 
 import AirportSelection from "./components/airportSelection";
 import AirlineSelection from "./components/airlineSelection";
 import ResultComponent from "./components/resultTable";
-import DarkmodeButton from "./components/darkmodeButton";
 import BottomLinks from "./components/bottomLinks";
+import IconButtons from "./components/iconButtons";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
-  const [selectedAirport, setSelectedAirport] = useState<AirportBasicData | null>(null);
-  const [selectedAirline, setSelectedAirline] = useState<Airline | null>(null);
-  const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [selectedAirport, setSelectedAirport] = useState<AirportBasicDataUi | null>(null);
+  const [selectedAirline, setSelectedAirline] = useState<AirlineUi | null>(null);
+  const [selectedFlight, setSelectedFlight] = useState<FlightUi | null>(null);
   const [showResult, setShowResult] = useState(false);
 
   const handleRandomizeClick = () => {
@@ -38,8 +37,19 @@ export default function Home() {
       return;
     }
     
-    randomizedFlight.departureName = selectedAirport?.name;
-    setSelectedFlight(randomizedFlight);
+    const flightData: FlightUi = {
+      airline: randomizedFlight.airline,
+      aircraft: randomizedFlight.aircraft,
+      flightNumber: randomizedFlight.flightNumber,
+      departureIcao: randomizedFlight.departureIcao,
+      departureTime: randomizedFlight.departureTime,
+      departureName: selectedAirport?.name,
+      arrivalIcao: randomizedFlight.arrivalIcao,
+      arrivalName: randomizedFlight.arrivalName,
+      arrivalTime: randomizedFlight.arrivalTime
+    }
+
+    setSelectedFlight(flightData);
     setShowResult(true);
   }
 
@@ -48,7 +58,7 @@ export default function Home() {
     setSelectedFlight(null);
   }
 
-  const { data, error, isLoading } = useSWR<ApiResponse<Flight[]>, Error>(
+  const { data, error, isLoading } = useSWR<ApiResponse<FlightApi[]>, Error>(
     selectedAirport && selectedAirline
       ? `/api/airport/${selectedAirport?.icao}/airline/${selectedAirline?.icao}/flight`
       : null,
@@ -102,7 +112,7 @@ export default function Home() {
         ) : null}
       </Box>
 
-      <DarkmodeButton />
+      <IconButtons />
       <BottomLinks />
     </>
   );
