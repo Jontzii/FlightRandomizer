@@ -1,6 +1,5 @@
 "use client"
 
-import { Flight } from "../types/airlineTypes";
 import {
   Table,
   Thead,
@@ -12,6 +11,7 @@ import {
   Divider,
   Show,
 } from "@chakra-ui/react";
+import { FlightUi } from "../types/uiTypes";
 
 const getTwoNumbers = (num: number): string => (num < 10 ? "0" : "") + num
 
@@ -19,7 +19,7 @@ export default function ResultTable({
   params,
 }: {
   params: {
-    selectedFlight: Flight;
+    selectedFlight: FlightUi;
   };
   }) {
   
