@@ -23,46 +23,31 @@ export default function SettingsModal({
   params: {
     isOpen: boolean;
     onClose: () => void;
+    userLimits: SettingsModelUi,
+    setUserLimits: (val: SettingsModelUi) => void
   };
 }) {
   const finalRef = useRef(null);
-  const [lowerLimit, setLowerLimit] = useState("0.5");
-  const [upperLimit, setUpperLimit] = useState("4");
+  const [lowerLimit, setLowerLimit] = useState(0.5);
+  const [upperLimit, setUpperLimit] = useState(4.0);
 
-  const format = (val: string) => `${val} h`;
-  const parse = (val: string) => val.replace(/^\h/, "");
+  const format = (val: number): string => `${val} h`;
+  const parse = (val: string): number => Number(val.replace(/^\h/, ""));
 
-  const submitToLocalStorage = () => {
+  const submit = () => {
     const settingsToStore: SettingsModelUi = {
       lowerLimit: lowerLimit,
       upperLimit: upperLimit
     }
     
-    localStorage.removeItem("flightrandomizer-limits-settings-ui");
-    localStorage.setItem("flightrandomizer-limits-settings-ui", JSON.stringify(settingsToStore));
-
+    params.setUserLimits(settingsToStore);
     params.onClose();
   }
 
   useEffect(() => {
-    const getSettings = (): SettingsModelUi => {
-      const json = localStorage.getItem("flightrandomizer-limits-settings-ui");
-
-      if (!json) {
-        return {
-          lowerLimit: "0.5",
-          upperLimit: "4",
-        };
-      }
-
-      const item: SettingsModelUi = JSON.parse(json);
-      return item;
-    };
-
-    const values = getSettings();
-    setLowerLimit(values.lowerLimit);
-    setUpperLimit(values.upperLimit);
-  }, [])
+    setLowerLimit(params.userLimits.lowerLimit);
+    setUpperLimit(params.userLimits.upperLimit);
+  }, [params.userLimits.lowerLimit, params.userLimits.upperLimit]);
 
   return (
     <Modal
@@ -81,7 +66,7 @@ export default function SettingsModal({
           <NumberInput
             step={0.5}
             min={0}
-            max={3}
+            max={Math.min(6, upperLimit - 1)}
             mt={1}
             mb={2}
             onChange={(valueString) => setLowerLimit(parse(valueString))}
@@ -98,7 +83,7 @@ export default function SettingsModal({
           </FormLabel>
           <NumberInput
             step={0.5}
-            min={3}
+            min={Math.max(2, lowerLimit + 1)}
             max={12}
             mt={1}
             mb={2}
@@ -113,7 +98,7 @@ export default function SettingsModal({
           </NumberInput>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={submitToLocalStorage}>
+          <Button colorScheme="blue" mr={3} onClick={submit}>
             Submit
           </Button>
         </ModalFooter>

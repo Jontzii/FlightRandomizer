@@ -3,8 +3,9 @@
 import useSWR from "swr";
 import { useState } from "react";
 import { FormControl, FormHelperText, FormLabel, Select } from "@chakra-ui/react";
-import { AirlineUi, AirportBasicDataUi } from "../types/uiTypes";
-import { AirlineApi, ApiResponse } from "../types/apiTypes";
+import { AirlineUi, AirportBasicDataUi, SettingsModelUi } from "@/app/types/uiTypes";
+import { AirlineApi, ApiResponse } from "@/app/types/apiTypes";
+import { generateQueryParams } from "@/app/utils/generateQueryParams";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
@@ -35,6 +36,8 @@ export default function AirlineSelection({
     selectedAirport: AirportBasicDataUi | null;
     selectedAirline: AirlineUi | null;
     setSelectedAirline: (val: AirlineUi | null) => void;
+    userLimits: SettingsModelUi,
+    setUserLimits: (val: SettingsModelUi) => void;
   };
   }) {
   
@@ -42,9 +45,12 @@ export default function AirlineSelection({
   
   const { data, error, isLoading } = useSWR<ApiResponse<AirlineApi[]>, Error>(
     params.selectedAirport
-      ? `/api/airport/${params.selectedAirport?.icao}/airline`
+      ? `/api/airport/${
+          params.selectedAirport?.icao
+        }/airline${generateQueryParams(params.userLimits)}`
       : null,
-    fetcher);
+    fetcher
+  );
   
   const validateEntry = (entry: string): void => {
     setSelectValue(entry);

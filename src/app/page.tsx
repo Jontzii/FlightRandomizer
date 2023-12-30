@@ -1,11 +1,7 @@
-"use client"
+"use client";
 
-import {
-  Box,
-  Button,
-  Text,
-} from "@chakra-ui/react";
 import { useState } from "react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import useSWR from "swr";
 
 import { AirlineUi, AirportBasicDataUi, FlightUi } from "./types/uiTypes";
@@ -16,27 +12,33 @@ import AirlineSelection from "./components/airlineSelection";
 import ResultComponent from "./components/resultTable";
 import BottomLinks from "./components/bottomLinks";
 import IconButtons from "./components/iconButtons";
+import useUserDefinedLimits from "./hooks/useUserDefinedLimits";
+import { generateQueryParams } from "./utils/generateQueryParams";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
-  const [selectedAirport, setSelectedAirport] = useState<AirportBasicDataUi | null>(null);
-  const [selectedAirline, setSelectedAirline] = useState<AirlineUi | null>(null);
+  const [selectedAirport, setSelectedAirport] =
+    useState<AirportBasicDataUi | null>(null);
+  const [selectedAirline, setSelectedAirline] = useState<AirlineUi | null>(
+    null
+  );
   const [selectedFlight, setSelectedFlight] = useState<FlightUi | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [userLimits, setUserLimits] = useUserDefinedLimits();
 
   const handleRandomizeClick = () => {
     const randomizedFlight = data
       ? data?.results[Math.floor(Math.random() * data?.results.length)]
       : null;
-    
+
     if (!randomizedFlight) {
       setSelectedFlight(null);
       setShowResult(false);
       return;
     }
-    
+
     const flightData: FlightUi = {
       airline: randomizedFlight.airline,
       aircraft: randomizedFlight.aircraft,
@@ -46,21 +48,21 @@ export default function Home() {
       departureName: selectedAirport?.name,
       arrivalIcao: randomizedFlight.arrivalIcao,
       arrivalName: randomizedFlight.arrivalName,
-      arrivalTime: randomizedFlight.arrivalTime
-    }
+      arrivalTime: randomizedFlight.arrivalTime,
+    };
 
     setSelectedFlight(flightData);
     setShowResult(true);
-  }
+  };
 
   const resetResultTable = () => {
     setShowResult(false);
     setSelectedFlight(null);
-  }
+  };
 
   const { data, error, isLoading } = useSWR<ApiResponse<FlightApi[]>, Error>(
     selectedAirport && selectedAirline
-      ? `/api/airport/${selectedAirport?.icao}/airline/${selectedAirline?.icao}/flight`
+      ? `/api/airport/${selectedAirport?.icao}/airline/${selectedAirline?.icao}/flight${generateQueryParams(userLimits)}`
       : null,
     fetcher
   );
@@ -95,7 +97,13 @@ export default function Home() {
         />
 
         <AirlineSelection
-          params={{ selectedAirport, selectedAirline, setSelectedAirline }}
+          params={{
+            selectedAirport,
+            selectedAirline,
+            setSelectedAirline,
+            userLimits,
+            setUserLimits,
+          }}
         />
 
         <Box>
@@ -112,7 +120,7 @@ export default function Home() {
         ) : null}
       </Box>
 
-      <IconButtons />
+      <IconButtons params={{ userLimits, setUserLimits }} />
       <BottomLinks />
     </>
   );

@@ -1,13 +1,16 @@
 import { MoonIcon, SettingsIcon, SunIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  IconButton,
-  useColorMode,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, IconButton, useColorMode, useDisclosure } from "@chakra-ui/react";
 import SettingsModal from "./settingsModal";
+import { SettingsModelUi } from "../types/uiTypes";
 
-export default function IconButtons() {
+export default function IconButtons({
+  params,
+}: {
+  params: {
+    userLimits: SettingsModelUi;
+    setUserLimits: (val: SettingsModelUi) => void;
+  };
+}) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -36,7 +39,14 @@ export default function IconButtons() {
           onClick={onOpen}
         />
       </Box>
-      <SettingsModal params={{ isOpen, onClose }} />
+      <SettingsModal
+        params={{
+          isOpen,
+          onClose,
+          userLimits: params.userLimits,
+          setUserLimits: params.setUserLimits,
+        }}
+      />
     </>
   );
 }

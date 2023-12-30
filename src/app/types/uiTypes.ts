@@ -21,6 +21,6 @@ export interface FlightUi {
 }
 
 export interface SettingsModelUi {
-  lowerLimit: string;
-  upperLimit: string;
+  lowerLimit: number;
+  upperLimit: number;
 }
