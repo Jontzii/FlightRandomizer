@@ -1,12 +1,12 @@
-import { AirportBasicData } from "@/app/types/uiTypes";
+import { generateGetRequest } from "@/app/api/generateRequest";
 import { AirportsResponse } from "@/app/types/fr24Types";
-import { generateGetRequest } from "../generateRequest";
+import { AirportBasicDataApi } from "@/app/types/apiTypes";
 
 const airportsAddress = "/_json/airports.php";
 
 export async function GET() {
   const data: AirportsResponse = await generateGetRequest(airportsAddress);
-  const results: AirportBasicData[] = data.rows.map((airport) => {
+  const results: AirportBasicDataApi[] = data.rows.map((airport) => {
     return {
       icao: airport.icao,
       name: airport.name,

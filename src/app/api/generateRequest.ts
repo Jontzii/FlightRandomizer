@@ -15,6 +15,11 @@ const commonHeaders = {
     "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
 };
 
+export const generateAirportQueryParameters = (
+  icao: string,
+  page: number
+): string => `?format=json&code=${icao}&limit=100&page=${page}`;
+
 export const generateGetRequest = async (requestUrl: string): Promise<any> => {
   const res = await fetch(baseAddress + requestUrl, {
     headers: commonHeaders,
@@ -23,13 +28,10 @@ export const generateGetRequest = async (requestUrl: string): Promise<any> => {
   return await res.json();
 };
 
-export const generateRequestForAirportDetails = async (
-  icao: string,
-  page: number
+export const generateApiGetRequest = async (
+  endpoint: string,
+  parameters: string
 ): Promise<any> => {
-  const endpoint = "/airport.json";
-  const parameters = `?format=json&code=${icao}&limit=100&page=${page}`;
-
   const res = await fetch(apiBaseAddress + endpoint + parameters, {
     headers: commonHeaders,
   });

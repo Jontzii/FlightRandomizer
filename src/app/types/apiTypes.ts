@@ -9,7 +9,7 @@ export interface AirportBasicDataApi {
   name: string;
 }
 
-export interface AirlineApi {
+export interface AirlineBasicDataApi {
   name: string;
   icao: string;
 }
@@ -19,8 +19,20 @@ export interface FlightApi {
   flightNumber: string;
   aircraft: string;
   departureIcao: string;
+  departureName: string;
   departureTime: number;
+  departureTimeLocalOffset: number;
   arrivalIcao: string;
   arrivalName: string;
   arrivalTime: number;
+  arrivalTimeLocalOffset: number;
+  scheduledDuration: number;
+}
+
+export interface AirlineAirportDataWithFlights extends AirlineBasicDataApi {
+  departures: FlightApi[];
+}
+
+export interface AirportDataWithFlights extends AirportBasicDataApi {
+  airlines: AirlineAirportDataWithFlights[];
 }
