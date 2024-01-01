@@ -1,64 +1,49 @@
 "use client"
 
-import useSWR from "swr";
 import { useState } from "react";
 import { FormControl, FormHelperText, FormLabel, Select } from "@chakra-ui/react";
-import { AirlineUi, AirportBasicDataUi, SettingsModelUi } from "@/app/types/uiTypes";
-import { AirlineApi, ApiResponse } from "@/app/types/apiTypes";
-import { generateQueryParams } from "@/app/utils/generateQueryParams";
+import { AirlineDataWithFlightsUi} from "@/app/types/uiTypes";
+import { AirlineAirportDataWithFlightsApi, ApiResponse } from "@/app/types/apiTypes";
 
-//@ts-expect-error Example taken straigh from docs
-const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
-
-const generateOptions = (airlines?: AirlineUi[]): JSX.Element[] => {
+const generateOptions = (
+  airlines?: AirlineDataWithFlightsUi[]
+): JSX.Element[] => {
   if (!airlines || airlines.length === 0) {
-    return ([<option key="no-flights">No flights from the airport</option>]);
+    return [<option key="no-flights">No flights from the airport</option>];
   }
 
-  const options = []
+  const options = [];
   options.push(<option key="select">Select airline</option>);
 
-  airlines.forEach((x) =>
+  airlines.forEach((airline) =>
     options.push(
-      <option key={x.icao} value={x.name}>
-        {x.name}
+      <option key={airline.icao} value={airline.name}>
+        {airline.name}
       </option>
     )
   );
 
   return options;
-}
+};
 
 export default function AirlineSelection({
   params,
 }: {
   params: {
-    selectedAirport: AirportBasicDataUi | null;
-    selectedAirline: AirlineUi | null;
-    setSelectedAirline: (val: AirlineUi | null) => void;
-    userLimits: SettingsModelUi,
-    setUserLimits: (val: SettingsModelUi) => void;
+    allAirlines: AirlineDataWithFlightsUi[] | undefined;
+    selectedAirline: AirlineDataWithFlightsUi | null;
+    setSelectedAirline: (val: AirlineDataWithFlightsUi | null) => void;
   };
-  }) {
-  
-  const [selectValue, setSelectValue] = useState<string>("")
-  
-  const { data, error, isLoading } = useSWR<ApiResponse<AirlineApi[]>, Error>(
-    params.selectedAirport
-      ? `/api/airport/${
-          params.selectedAirport?.icao
-        }/airline${generateQueryParams(params.userLimits)}`
-      : null,
-    fetcher
-  );
-  
+}) {
+  const [selectValue, setSelectValue] = useState<string>("");
+
   const validateEntry = (entry: string): void => {
     setSelectValue(entry);
 
-    if (data && data.results) {
+    if (params.allAirlines) {
       // Find the correct airline value from data with name
 
-      const found = data.results.filter((x) => x.name === entry);
+      const found = params.allAirlines.filter((airline) => airline.name === entry);
 
       if (found.length === 1) {
         return params.setSelectedAirline(found[0]);
@@ -66,17 +51,17 @@ export default function AirlineSelection({
     }
 
     params.setSelectedAirline(null);
-  }
-  
+  };
+
   return (
     <FormControl textAlign={"left"} pt={4} pb={4}>
       <FormLabel>Airlines</FormLabel>
       <Select
-        disabled={!params.selectedAirport || isLoading}
+        disabled={!params.allAirlines}
         value={selectValue}
         onChange={(e) => validateEntry(e.target.value)}
       >
-        {generateOptions(data?.results)}
+        {generateOptions(params.allAirlines)}
       </Select>
       <FormHelperText>
         Airlines that have flights from the airport
