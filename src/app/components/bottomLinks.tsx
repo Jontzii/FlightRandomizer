@@ -27,6 +27,17 @@ export default function BottomLinks() {
       >
         @Jontzii
       </Link>
+      {" - "}
+      <Link
+        as={NextLink}
+        href="https://github.com/Jontzii/FlightRandomizer"
+        rel="noreferrer noopener"
+        target="_blank"
+        color="blue.500"
+        _hover={{ color: "blue.600" }}
+      >
+        Sources
+      </Link>
       <br />
       Utilises data from{" "}
       <Link
