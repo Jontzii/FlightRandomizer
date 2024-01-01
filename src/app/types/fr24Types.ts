@@ -476,7 +476,7 @@ export interface FlightData {
   status: FlightStatus;
   aircraft: Aircraft;
   owner: Owner | null;
-  airline: Airline;
+  airline: Airline | null;
   airport: FlightAirportData;
   time: Time;
 }

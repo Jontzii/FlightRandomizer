@@ -1,11 +1,10 @@
-import _ from "lodash";
+import { NextRequest } from "next/server";
 import {
   generateAirportQueryParameters,
   generateApiGetRequest,
 } from "@/app/api/generateRequest";
 import { AirportDetailsResponse } from "@/app/types/fr24Types";
 import { AirportDataWithFlightsApi, FlightApi } from "@/app/types/apiTypes";
-import { NextRequest } from "next/server";
 
 const getAirportDataWithDepartures = async (
   icao: string
@@ -44,11 +43,15 @@ const getAirportDataWithDepartures = async (
 
     if (departuresInPage.length > 0) {
       departuresInPage.forEach((departure) => {
+        if (!departure.flight.airline) {
+          return;
+        }
+
         const airlineCode = departure.flight.airline.code.icao.toUpperCase();
         const flightData: FlightApi = {
-          airline: departure.flight.airline.code.icao,
+          airline: airlineCode,
           flightNumber: departure.flight.identification.number.default || "",
-          aircraft: departure.flight.aircraft.model.code,
+          aircraft: departure.flight.aircraft?.model.code || "ND",
           departureIcao: icao,
           departureName: result.name,
           departureTime: departure.flight.time.scheduled.departure || -1,
@@ -74,7 +77,7 @@ const getAirportDataWithDepartures = async (
         } else {
           result.airlines.push({
             icao: airlineCode,
-            name: departure.flight.airline.short,
+            name: departure.flight.airline?.short || "NOT DETERMINED",
             departures: [flightData],
           });
         }
