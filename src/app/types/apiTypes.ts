@@ -29,10 +29,10 @@ export interface FlightApi {
   scheduledDuration: number;
 }
 
-export interface AirlineAirportDataWithFlights extends AirlineBasicDataApi {
+export interface AirlineAirportDataWithFlightsApi extends AirlineBasicDataApi {
   departures: FlightApi[];
 }
 
-export interface AirportDataWithFlights extends AirportBasicDataApi {
-  airlines: AirlineAirportDataWithFlights[];
+export interface AirportDataWithFlightsApi extends AirportBasicDataApi {
+  airlines: AirlineAirportDataWithFlightsApi[];
 }

@@ -4,7 +4,7 @@ import {
   generateApiGetRequest,
 } from "@/app/api/generateRequest";
 import { AirportDetailsResponse } from "@/app/types/fr24Types";
-import { AirportDataWithFlights, FlightApi } from "@/app/types/apiTypes";
+import { AirportDataWithFlightsApi, FlightApi } from "@/app/types/apiTypes";
 import { NextRequest } from "next/server";
 
 const addHours = (hours: number, minutes: number = 0) => {
@@ -15,11 +15,11 @@ const addHours = (hours: number, minutes: number = 0) => {
 
 const getAirportDataWithDepartures = async (
   icao: string
-): Promise<AirportDataWithFlights | null> => {
+): Promise<AirportDataWithFlightsApi | null> => {
   let page = 1;
   let totalPageNumber = 1;
   let isBasicDataSet = false;
-  const result: AirportDataWithFlights = {
+  const result: AirportDataWithFlightsApi = {
     icao: icao.toUpperCase(),
     name: "",
     airlines: [],
@@ -94,7 +94,7 @@ const getAirportDataWithDepartures = async (
 };
 
 const filterAirportDataBasedOnLimits = (
-  data: AirportDataWithFlights,
+  data: AirportDataWithFlightsApi,
   start: number,
   end: number
 ) => {
