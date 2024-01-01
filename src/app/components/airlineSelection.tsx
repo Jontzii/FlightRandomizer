@@ -1,12 +1,31 @@
-"use client"
+"use client";
 
-import { useState } from "react";
-import { FormControl, FormHelperText, FormLabel, Select } from "@chakra-ui/react";
-import { AirlineDataWithFlightsUi} from "@/app/types/uiTypes";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Select,
+} from "@chakra-ui/react";
+import { AirlineDataWithFlightsUi } from "@/app/types/uiTypes";
+
+const compare = (a: AirlineDataWithFlightsUi, b: AirlineDataWithFlightsUi) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+};
 
 const generateOptions = (
-  airlines?: AirlineDataWithFlightsUi[]
+  isLoading: boolean,
+  airlines?: AirlineDataWithFlightsUi[],
 ): JSX.Element[] => {
+  if (isLoading) {
+    return [<option key="loading">Airlines loading...</option>];
+  }
+
   if (!airlines || airlines.length === 0) {
     return [<option key="no-flights">No flights from the airport</option>];
   }
@@ -14,7 +33,7 @@ const generateOptions = (
   const options = [];
   options.push(<option key="select">Select airline</option>);
 
-  airlines.forEach((airline) =>
+  airlines.sort(compare).forEach((airline) =>
     options.push(
       <option key={airline.icao} value={airline.name}>
         {airline.name}
@@ -29,23 +48,25 @@ export default function AirlineSelection({
   params,
 }: {
   params: {
+    airlinesLoading: boolean;
     allAirlines: AirlineDataWithFlightsUi[] | undefined;
     selectedAirline: AirlineDataWithFlightsUi | null;
     setSelectedAirline: (val: AirlineDataWithFlightsUi | null) => void;
+    selectedAirlineStr: string;
+    setSelectedAirlineStr: (val: string) => void;
   };
 }) {
-  const [selectValue, setSelectValue] = useState<string>("");
-
   const validateEntry = (entry: string): void => {
-    setSelectValue(entry);
+    params.setSelectedAirlineStr(entry);
 
     if (params.allAirlines) {
       // Find the correct airline value from data with name
+      const found = params.allAirlines.find(
+        (airline) => airline.name === entry
+      );
 
-      const found = params.allAirlines.filter((airline) => airline.name === entry);
-
-      if (found.length === 1) {
-        return params.setSelectedAirline(found[0]);
+      if (found) {
+        return params.setSelectedAirline(found);
       }
     }
 
@@ -57,10 +78,10 @@ export default function AirlineSelection({
       <FormLabel fontSize={{ base: "small", sm: "medium" }}>Airlines</FormLabel>
       <Select
         disabled={!params.allAirlines}
-        value={selectValue}
+        value={params.selectedAirlineStr}
         onChange={(e) => validateEntry(e.target.value)}
       >
-        {generateOptions(params.allAirlines)}
+        {generateOptions(params.airlinesLoading, params.allAirlines)}
       </Select>
       <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
         Airlines with flights in the selected time window

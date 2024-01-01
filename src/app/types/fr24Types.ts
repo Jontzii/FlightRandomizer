@@ -474,7 +474,7 @@ export interface DepartureAndArrivalData {
 export interface FlightData {
   identification: Identification;
   status: FlightStatus;
-  aircraft: Aircraft;
+  aircraft: Aircraft | null;
   owner: Owner | null;
   airline: Airline | null;
   airport: FlightAirportData;

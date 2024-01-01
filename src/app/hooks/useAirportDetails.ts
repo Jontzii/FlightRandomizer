@@ -18,7 +18,7 @@ const hoursToUnixSeconds = (hoursFromNow: number): number => {
 export default function useAirportDetails(
   userLimits: SettingsModelUi,
   selectedAirport: AirportBasicDataUi | null
-) {
+): [AirportDataWithFlightsApi | null, boolean] {
   const [filteredData, setFilteredData] =
     useState<AirportDataWithFlightsApi | null>(null);
   const { data, error, isLoading } = useSWR<
@@ -65,5 +65,5 @@ export default function useAirportDetails(
     setFilteredData(filtered);
   }, [data, userLimits]);
 
-  return filteredData;
+  return [filteredData, isLoading];
 }

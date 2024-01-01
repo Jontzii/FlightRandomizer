@@ -22,10 +22,15 @@ export default function App() {
     useState<AirportBasicDataUi | null>(null);
   const [selectedAirline, setSelectedAirline] =
     useState<AirlineDataWithFlightsUi | null>(null);
+  // This is here due to an issue with Chakra select
+  const [selectedAirlineStr, setSelectedAirlineStr] = useState<string>("");
   const [selectedFlight, setSelectedFlight] = useState<FlightUi | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [userLimits, setUserLimits] = useUserDefinedLimits();
-  const airportData = useAirportDetails(userLimits, selectedAirport);
+  const [airportData, airportDataLoading] = useAirportDetails(
+    userLimits,
+    selectedAirport
+  );
 
   const handleRandomizeClick = () => {
     const departures = selectedAirline?.departures;
@@ -54,8 +59,11 @@ export default function App() {
     setShowResult(true);
   };
 
+  // Resets results and selected airline
   const resetResultTable = () => {
     setShowResult(false);
+    setSelectedAirlineStr("");
+    setSelectedAirline(null);
     setSelectedFlight(null);
   };
 
@@ -92,16 +100,24 @@ export default function App() {
 
         <AirlineSelection
           params={{
+            airlinesLoading: airportDataLoading,
             allAirlines: airportData?.airlines,
             selectedAirline,
             setSelectedAirline,
+            selectedAirlineStr,
+            setSelectedAirlineStr,
           }}
         />
 
         <Box>
           <Button
             fontSize={{ base: "small", sm: "medium" }}
-            isDisabled={selectedAirport == null || selectedAirline == null}
+            isLoading={airportDataLoading}
+            isDisabled={
+              airportDataLoading ||
+              selectedAirport == null ||
+              selectedAirline == null
+            }
             onClick={handleRandomizeClick}
           >
             Randomize
