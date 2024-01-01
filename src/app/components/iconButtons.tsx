@@ -1,3 +1,5 @@
+"use client"
+
 import { MoonIcon, SettingsIcon, SunIcon } from "@chakra-ui/icons";
 import { Box, IconButton, useColorMode, useDisclosure } from "@chakra-ui/react";
 import SettingsModal from "./settingsModal";
