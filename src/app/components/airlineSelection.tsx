@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { FormControl, FormHelperText, FormLabel, Select } from "@chakra-ui/react";
 import { AirlineDataWithFlightsUi} from "@/app/types/uiTypes";
-import { AirlineAirportDataWithFlightsApi, ApiResponse } from "@/app/types/apiTypes";
 
 const generateOptions = (
   airlines?: AirlineDataWithFlightsUi[]
@@ -55,7 +54,7 @@ export default function AirlineSelection({
 
   return (
     <FormControl textAlign={"left"} pt={4} pb={4}>
-      <FormLabel>Airlines</FormLabel>
+      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Airlines</FormLabel>
       <Select
         disabled={!params.allAirlines}
         value={selectValue}
@@ -63,8 +62,8 @@ export default function AirlineSelection({
       >
         {generateOptions(params.allAirlines)}
       </Select>
-      <FormHelperText>
-        Airlines that have flights from the airport
+      <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
+        Airlines with flights in the selected time window
       </FormHelperText>
     </FormControl>
   );

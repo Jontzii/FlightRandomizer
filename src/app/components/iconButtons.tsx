@@ -1,7 +1,7 @@
 import { MoonIcon, SettingsIcon, SunIcon } from "@chakra-ui/icons";
 import { Box, IconButton, useColorMode, useDisclosure } from "@chakra-ui/react";
 import SettingsModal from "./settingsModal";
-import { SettingsModelUi } from "../types/uiTypes";
+import { SettingsModelUi } from "@/app/types/uiTypes";
 
 export default function IconButtons({
   params,

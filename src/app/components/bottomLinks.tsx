@@ -1,5 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
+import NextLink from "next/link";
 
 export default function BottomLinks() {
   return (
@@ -13,8 +14,9 @@ export default function BottomLinks() {
       bottom={2}
       left={0}
     >
-      Made by{" "}
+      Created by{" "}
       <Link
+        as={NextLink}
         href="https://www.github.com/jontzii"
         rel="noreferrer noopener"
         target="_blank"
@@ -26,6 +28,7 @@ export default function BottomLinks() {
       <br />
       Utilises data from{" "}
       <Link
+        as={NextLink}
         href="https://www.flightradar24.com"
         rel="noreferrer noopener"
         target="_blank"

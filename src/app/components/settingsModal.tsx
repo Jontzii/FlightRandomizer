@@ -15,7 +15,7 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from "@chakra-ui/react";
-import { SettingsModelUi } from "../types/uiTypes";
+import { SettingsModelUi } from "@/app/types/uiTypes";
 
 export default function SettingsModal({
   params,

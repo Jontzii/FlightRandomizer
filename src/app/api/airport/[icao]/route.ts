@@ -7,12 +7,6 @@ import { AirportDetailsResponse } from "@/app/types/fr24Types";
 import { AirportDataWithFlightsApi, FlightApi } from "@/app/types/apiTypes";
 import { NextRequest } from "next/server";
 
-const addHours = (hours: number, minutes: number = 0) => {
-  const now = new Date();
-  now.setHours(now.getHours() + hours, now.getMinutes() + minutes);
-  return Math.round(now.getTime() / 1000);
-};
-
 const getAirportDataWithDepartures = async (
   icao: string
 ): Promise<AirportDataWithFlightsApi | null> => {
@@ -93,29 +87,6 @@ const getAirportDataWithDepartures = async (
   return result;
 };
 
-const filterAirportDataBasedOnLimits = (
-  data: AirportDataWithFlightsApi,
-  start: number,
-  end: number
-) => {
-  // Go through all flights
-  // If before start => remove
-  // If after end => remove
-  //
-
-  data.airlines.forEach((airline) => {
-    airline.departures = airline.departures.filter((flight) => {
-      return start <= flight.departureTime && flight.departureTime <= end;
-    });
-  });
-
-  data.airlines = data.airlines.filter((airline) => {
-    return airline.departures.length > 0;
-  });
-
-  return data;
-};
-
 export async function GET(
   request: NextRequest,
   {
@@ -131,19 +102,14 @@ export async function GET(
     );
   }
 
-  const searchParams = request.nextUrl.searchParams;
-  const startTime = Number(searchParams.get("from")) || addHours(0, 30);
-  const endTime = Number(searchParams.get("to")) || addHours(3);
   const res = await getAirportDataWithDepartures(params.icao);
 
   if (!res) {
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 
-  const filteredRes = filterAirportDataBasedOnLimits(res, startTime, endTime);
-
   return Response.json({
     createdAt: Math.round(new Date().getTime() / 1000),
-    results: filteredRes,
+    results: res,
   });
 }

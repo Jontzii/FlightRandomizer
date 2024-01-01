@@ -1,7 +1,7 @@
 "use client";
 
+import { useState } from "react";
 import useSWR from "swr";
-import { AirportBasicDataApi, ApiResponse } from "../types/apiTypes";
 import {
   FormControl,
   FormErrorMessage,
@@ -10,8 +10,8 @@ import {
   Input,
   Link,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { AirportBasicDataUi } from "../types/uiTypes";
+import { AirportBasicDataApi, ApiResponse } from "@/app/types/apiTypes";
+import { AirportBasicDataUi } from "@/app/types/uiTypes";
 
 //@ts-expect-error Example taken straigh from docs
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
@@ -56,7 +56,7 @@ export default function AirportSelection({
 
   return (
     <FormControl textAlign={"left"} pt={4} pb={4} isInvalid={airportInvalid}>
-      <FormLabel>Airport</FormLabel>
+      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Airport</FormLabel>
       <Input
         maxLength={4}
         placeholder="EFHK"
@@ -67,9 +67,11 @@ export default function AirportSelection({
         }}
       />
       {airportInvalid ? (
-        <FormErrorMessage>Invalid ICAO code</FormErrorMessage>
+        <FormErrorMessage fontSize={{ base: "small", sm: "medium" }}>
+          Invalid ICAO code
+        </FormErrorMessage>
       ) : (
-        <FormHelperText>
+        <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
           {params.selectedAirport ? (
             params.selectedAirport.name
           ) : (
