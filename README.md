@@ -23,7 +23,3 @@ The application needs to get all departing flights from FR24, as it seems like t
 ## Disclaimer
 
 The app depends on an unofficial/undocumented API by FlightRadar24.com, which could change at any time, breaking the app.
-
-## Future ideas
-
-Combine flight query inside the airline API so that only API query needs to be done.
