@@ -65,38 +65,52 @@ export default function ResultTable({
     <>
       <Divider orientation="horizontal" mt={8} />
       <TableContainer mt={4} mb={24}>
-        <Table variant="striped" colorScheme="blue">
+        <Table
+          __css={{ "table-layout": "fixed", width: "full" }}
+          variant="striped"
+          colorScheme="blue"
+        >
           <Tbody fontSize={{ base: "small", sm: "medium" }}>
             <Tr>
-              <Td>Flight</Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}>
+                Flight
+              </Td>
               <Td>{params.selectedFlight.flightNumber}</Td>
             </Tr>
             <Tr>
-              <Td>Origin</Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}>
+                Origin
+              </Td>
               <Td>{params.selectedFlight.departureIcao.toUpperCase()}</Td>
             </Tr>
             <Tr>
-              <Td></Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}></Td>
               <Td>{`${departureUtcTime} / ${departureLocalTime} (UTC/Local)`}</Td>
             </Tr>
             <Tr>
-              <Td>Destination</Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}>
+                Destination
+              </Td>
               <Td>{params.selectedFlight.arrivalIcao.toUpperCase()}</Td>
             </Tr>
             <Tr>
-              <Td></Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}></Td>
               <Td>{params.selectedFlight.arrivalName}</Td>
             </Tr>
             <Tr>
-              <Td></Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}></Td>
               <Td>{`${arrivalUtcTime} / ${arrivalLocalTime} (UTC/Local)`}</Td>
             </Tr>
             <Tr>
-              <Td>Length</Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}>
+                Length
+              </Td>
               <Td>{`${blockTime}`}</Td>
             </Tr>
             <Tr>
-              <Td>Aircraft</Td>
+              <Td width={{ base: "110px", sm: "130px", md: "150px" }}>
+                Aircraft
+              </Td>
               <Td>{params.selectedFlight.aircraft}</Td>
             </Tr>
           </Tbody>
