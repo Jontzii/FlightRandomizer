@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { SettingsModelUi } from "../types/uiTypes";
+import { SettingsModelUi } from "@/app/types/uiTypes";
 
 export default function useUserDefinedLimits(): [
   SettingsModelUi,

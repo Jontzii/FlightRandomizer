@@ -1,4 +1,4 @@
-import { SettingsModelUi } from "../types/uiTypes";
+import { SettingsModelUi } from "@/app/types/uiTypes";
 
 const hoursToUnixSeconds = (hoursFromNow: number): number => {
   const date = new Date();
