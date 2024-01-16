@@ -23,6 +23,7 @@ export const generateAirportQueryParameters = (
 export const generateGetRequest = async (requestUrl: string): Promise<any> => {
   const res = await fetch(baseAddress + requestUrl, {
     headers: commonHeaders,
+    cache: "no-store",
   });
 
   return await res.json();
@@ -34,6 +35,7 @@ export const generateApiGetRequest = async (
 ): Promise<any> => {
   const res = await fetch(apiBaseAddress + endpoint + parameters, {
     headers: commonHeaders,
+    cache: "no-store",
   });
 
   return await res.json();

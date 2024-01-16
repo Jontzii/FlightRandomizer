@@ -2,9 +2,9 @@ import { NextRequest } from "next/server";
 import {
   generateAirportQueryParameters,
   generateApiGetRequest,
-} from "@/app/api/generateRequest";
-import { AirportDetailsResponse } from "@/app/types/fr24Types";
-import { AirportDataWithFlightsApi, FlightApi } from "@/app/types/apiTypes";
+} from "@/api/generateRequest";
+import { AirportDetailsResponse } from "@/types/fr24Types";
+import { AirportDataWithFlightsApi, FlightApi } from "@/types/apiTypes";
 
 const getAirportDataWithDepartures = async (
   icao: string

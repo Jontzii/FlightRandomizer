@@ -39,9 +39,6 @@ export default function useAirportDetails(
     ) => {
       data.airlines.forEach((airline) => {
         airline.departures = airline.departures.filter((flight) => {
-          console.log(
-            `Flight ${flight.flightNumber} - dep: ${flight.departureTime}`
-          );
           return start <= flight.departureTime && flight.departureTime <= end;
         });
       });

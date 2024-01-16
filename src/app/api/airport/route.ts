@@ -1,6 +1,6 @@
-import { generateGetRequest } from "@/app/api/generateRequest";
-import { AirportsResponse } from "@/app/types/fr24Types";
-import { AirportBasicDataApi } from "@/app/types/apiTypes";
+import { generateGetRequest } from "@/api/generateRequest";
+import { AirportsResponse } from "@/types/fr24Types";
+import { AirportBasicDataApi } from "@/types/apiTypes";
 
 const airportsAddress = "/_json/airports.php";
 

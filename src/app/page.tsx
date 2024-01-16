@@ -7,13 +7,13 @@ import {
   AirlineDataWithFlightsUi,
   AirportBasicDataUi,
   FlightUi,
-} from "@/app/types/uiTypes";
+} from "@/types/uiTypes";
 
-import AirportSelection from "@/app/components/airportSelection";
-import AirlineSelection from "@/app/components/airlineSelection";
-import ResultComponent from "@/app/components/resultTable";
-import BottomLinks from "@/app/components/bottomLinks";
-import IconButtons from "@/app/components/iconButtons";
+import AirportSelection from "@/components/airportSelection";
+import AirlineSelection from "@/components/airlineSelection";
+import ResultComponent from "@/components/resultTable";
+import BottomLinks from "@/components/bottomLinks";
+import IconButtons from "@/components/iconButtons";
 import useUserDefinedLimits from "@/app/hooks/useUserDefinedLimits";
 import useAirportDetails from "@/app/hooks/useAirportDetails";
 
