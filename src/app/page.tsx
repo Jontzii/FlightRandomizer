@@ -11,6 +11,7 @@ import {
 
 import AirportSelection from "@/components/airportSelection";
 import AirlineSelection from "@/components/airlineSelection";
+import AircraftSelection from "@/components/aircraftSelection";
 import ResultComponent from "@/components/resultTable";
 import BottomLinks from "@/components/bottomLinks";
 import IconButtons from "@/components/iconButtons";
@@ -22,6 +23,8 @@ export default function App() {
     useState<AirportBasicDataUi | null>(null);
   const [selectedAirline, setSelectedAirline] =
     useState<AirlineDataWithFlightsUi | null>(null);
+  const [selectedAircraft, setSelectedAircraft] = useState<string>("");
+  
   // This is here due to an issue with Chakra select
   const [selectedAirlineStr, setSelectedAirlineStr] = useState<string>("");
   const [selectedFlight, setSelectedFlight] = useState<FlightUi | null>(null);
@@ -33,7 +36,13 @@ export default function App() {
   );
 
   const handleRandomizeClick = () => {
-    const departures = selectedAirline?.departures;
+    let departures = selectedAirline?.departures;
+
+    // Filter for correct aircraft
+    if (departures && selectedAircraft !== "") {
+      departures = departures?.filter((dep) => dep.aircraft === selectedAircraft)
+    }
+
     const randomizedFlight = departures
       ? departures[Math.floor(Math.random() * departures.length)]
       : null;
@@ -65,7 +74,13 @@ export default function App() {
     setSelectedAirlineStr("");
     setSelectedAirline(null);
     setSelectedFlight(null);
+    setSelectedAircraft("");
   };
+
+  const resetAircraftAndResultTable = () => {
+    setShowResult(false);
+    setSelectedAircraft("");
+  }
 
   return (
     <>
@@ -106,6 +121,16 @@ export default function App() {
             setSelectedAirline,
             selectedAirlineStr,
             setSelectedAirlineStr,
+            resetAircraftAndResultTable
+          }}
+        />
+
+        <AircraftSelection
+          params={{
+            airlinesLoading: airportDataLoading,
+            selectedAirline,
+            selectedAircraft,
+            setSelectedAircraft
           }}
         />
 

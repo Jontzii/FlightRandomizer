@@ -7,6 +7,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { AirlineDataWithFlightsUi } from "@/app/types/uiTypes";
+import { generateRandomString } from "@/app/utils/generateRandomString";
 
 const compare = (a: AirlineDataWithFlightsUi, b: AirlineDataWithFlightsUi) => {
   if (a.name < b.name) {
@@ -35,7 +36,7 @@ const generateOptions = (
 
   airlines.sort(compare).forEach((airline) =>
     options.push(
-      <option key={airline.icao} value={airline.name}>
+      <option key={`${airline.icao}-${generateRandomString(10)}`} value={airline.name}>
         {airline.name}
       </option>
     )
@@ -54,10 +55,12 @@ export default function AirlineSelection({
     setSelectedAirline: (val: AirlineDataWithFlightsUi | null) => void;
     selectedAirlineStr: string;
     setSelectedAirlineStr: (val: string) => void;
+    resetAircraftAndResultTable: () => void
   };
 }) {
   const validateEntry = (entry: string): void => {
     params.setSelectedAirlineStr(entry);
+    params.resetAircraftAndResultTable();
 
     if (params.allAirlines) {
       // Find the correct airline value from data with name
