@@ -63,7 +63,7 @@ export default function AircraftSelection({
 
   return (
     <FormControl textAlign={"left"} pt={4} pb={4}>
-      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Airlines</FormLabel>
+      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Aircrafts</FormLabel>
       <Select
         disabled={!params.selectedAirline}
         value={params.selectedAircraft}
@@ -72,7 +72,7 @@ export default function AircraftSelection({
         {generateOptions(params.airlinesLoading, params.selectedAirline)}
       </Select>
       <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
-        Airlines with flights in the selected time window
+        Aircrafts that the airline operates from this airport
       </FormHelperText>
     </FormControl>
   );
