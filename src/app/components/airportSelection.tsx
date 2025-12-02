@@ -1,20 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import useSWR from "swr";
-import {
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Link,
-} from "@chakra-ui/react";
-import { AirportBasicDataApi, ApiResponse } from "@/app/types/apiTypes";
-import { AirportBasicDataUi } from "@/app/types/uiTypes";
+import { AirportBasicDataApi, ApiResponse } from '@/app/types/apiTypes';
+import { AirportBasicDataUi } from '@/app/types/uiTypes';
+import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Link } from '@chakra-ui/react';
+import { useState } from 'react';
+import useSWR from 'swr';
 
 //@ts-expect-error Example taken straigh from docs
-const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
+const fetcher = (...args: unknown[]) => fetch(...args).then((res) => res.json());
 
 export default function AirportSelection({
   params,
@@ -25,15 +18,12 @@ export default function AirportSelection({
     resetResultTable: () => void;
   };
 }) {
-  const [selectedAirportIcao, setSelectAirportIcao] = useState("");
+  const [selectedAirportIcao, setSelectAirportIcao] = useState('');
   const [airportInvalid, setAirportInvalid] = useState(false);
 
-  const { data, error, isLoading } = useSWR<
-    ApiResponse<AirportBasicDataApi[]>,
-    Error
-  >("/api/airport", fetcher);
+  const { data } = useSWR<ApiResponse<AirportBasicDataApi[]>, Error>('/api/airport', fetcher);
 
-  const validateInput = (input: String): void => {
+  const validateInput = (input: string): void => {
     if (data == null || input.length != 4) {
       setAirportInvalid(false);
       params.resetResultTable();
@@ -55,8 +45,8 @@ export default function AirportSelection({
   };
 
   return (
-    <FormControl textAlign={"left"} pt={4} pb={4} isInvalid={airportInvalid}>
-      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Airport</FormLabel>
+    <FormControl textAlign={'left'} pt={4} pb={4} isInvalid={airportInvalid}>
+      <FormLabel fontSize={{ base: 'small', sm: 'medium' }}>Airport</FormLabel>
       <Input
         maxLength={4}
         placeholder="EFHK"
@@ -67,18 +57,13 @@ export default function AirportSelection({
         }}
       />
       {airportInvalid ? (
-        <FormErrorMessage fontSize={{ base: "small", sm: "medium" }}>
-          Invalid ICAO code
-        </FormErrorMessage>
+        <FormErrorMessage fontSize={{ base: 'small', sm: 'medium' }}>Invalid ICAO code</FormErrorMessage>
       ) : (
-        <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
+        <FormHelperText fontSize={{ base: 'small', sm: 'medium' }}>
           {params.selectedAirport ? (
             params.selectedAirport.name
           ) : (
-            <Link
-              href="https://en.wikipedia.org/wiki/ICAO_airport_code"
-              target="_blank"
-            >
+            <Link href="https://en.wikipedia.org/wiki/ICAO_airport_code" target="_blank">
               Airport ICAO code
             </Link>
           )}

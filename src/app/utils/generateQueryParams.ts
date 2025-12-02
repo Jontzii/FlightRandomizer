@@ -1,4 +1,4 @@
-import { SettingsModelUi } from "@/app/types/uiTypes";
+import { SettingsModelUi } from '@/app/types/uiTypes';
 
 const hoursToUnixSeconds = (hoursFromNow: number): number => {
   const date = new Date();
@@ -7,9 +7,7 @@ const hoursToUnixSeconds = (hoursFromNow: number): number => {
   return Math.round(date.getTime() / 1000);
 };
 
-export const generateQueryParams = (
-  userTimeLimits: SettingsModelUi
-): string => {
+export const generateQueryParams = (userTimeLimits: SettingsModelUi): string => {
   const lowerLimit = hoursToUnixSeconds(userTimeLimits.lowerLimit);
   const upperLimit = hoursToUnixSeconds(userTimeLimits.upperLimit);
 

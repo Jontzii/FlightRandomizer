@@ -40,7 +40,7 @@ export interface AirportDetailsResultRequest {
   page: number;
   pk: null;
   plugin: null;
-  "plugin-setting": PluginSetting;
+  'plugin-setting': PluginSetting;
   token: null;
 }
 
@@ -83,7 +83,7 @@ export interface ImageDetails {
 }
 
 export enum ImageSource {
-  JetphotosCOM = "Jetphotos.com",
+  JetphotosCOM = 'Jetphotos.com',
 }
 
 export interface Airlines {
@@ -220,32 +220,32 @@ export interface Timezone {
 }
 
 export enum Abbr {
-  Cet = "CET",
-  Cst = "CST",
-  Eet = "EET",
-  Est = "EST",
-  Gmt = "GMT",
-  Hkt = "HKT",
-  Ist = "IST",
-  Jst = "JST",
-  The03 = "+03",
-  The04 = "+04",
-  The07 = "+07",
-  The08 = "+08",
-  Wet = "WET",
+  Cet = 'CET',
+  Cst = 'CST',
+  Eet = 'EET',
+  Est = 'EST',
+  Gmt = 'GMT',
+  Hkt = 'HKT',
+  Ist = 'IST',
+  Jst = 'JST',
+  The03 = '+03',
+  The04 = '+04',
+  The07 = '+07',
+  The08 = '+08',
+  Wet = 'WET',
 }
 
 export enum AbbrName {
-  CentralEuropeanTime = "Central European Time",
-  CentralStandardTime = "Central Standard Time",
-  ChinaStandardTime = "China Standard Time",
-  EasternEuropeanTime = "Eastern European Time",
-  EasternStandardTime = "Eastern Standard Time",
-  GreenwichMeanTime = "Greenwich Mean Time",
-  HongKongTime = "Hong Kong Time",
-  IndiaStandardTime = "India Standard Time",
-  JapanStandardTime = "Japan Standard Time",
-  WesternEuropeanTime = "Western European Time",
+  CentralEuropeanTime = 'Central European Time',
+  CentralStandardTime = 'Central Standard Time',
+  ChinaStandardTime = 'China Standard Time',
+  EasternEuropeanTime = 'Eastern European Time',
+  EasternStandardTime = 'Eastern Standard Time',
+  GreenwichMeanTime = 'Greenwich Mean Time',
+  HongKongTime = 'Hong Kong Time',
+  IndiaStandardTime = 'India Standard Time',
+  JapanStandardTime = 'Japan Standard Time',
+  WesternEuropeanTime = 'Western European Time',
 }
 
 export interface URL {
@@ -413,23 +413,23 @@ export interface GenericStatus {
 }
 
 export enum Icon {
-  Gray = "gray",
-  Green = "green",
-  Red = "red",
-  Yellow = "yellow",
+  Gray = 'gray',
+  Green = 'green',
+  Red = 'red',
+  Yellow = 'yellow',
 }
 
 export enum Text {
-  Delayed = "delayed",
-  Diverted = "diverted",
-  Estimated = "estimated",
-  Landed = "landed",
-  Scheduled = "scheduled",
+  Delayed = 'delayed',
+  Diverted = 'diverted',
+  Estimated = 'estimated',
+  Landed = 'landed',
+  Scheduled = 'scheduled',
 }
 
 export enum Type {
-  Arrival = "arrival",
-  Departure = "departure",
+  Arrival = 'arrival',
+  Departure = 'departure',
 }
 
 export interface Time {
