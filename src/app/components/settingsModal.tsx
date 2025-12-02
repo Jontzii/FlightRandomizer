@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { SettingsModelUi } from "@/app/types/uiTypes";
 import {
   Button,
   FormLabel,
@@ -17,7 +17,7 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from "@chakra-ui/react";
-import { SettingsModelUi } from "@/app/types/uiTypes";
+import { useEffect, useState } from "react";
 
 export default function SettingsModal({
   params,
@@ -29,7 +29,6 @@ export default function SettingsModal({
     setUserLimits: (val: SettingsModelUi) => void
   };
 }) {
-  const finalRef = useRef(null);
   const [lowerLimit, setLowerLimit] = useState(0.5);
   const [upperLimit, setUpperLimit] = useState(4.0);
 
@@ -53,7 +52,6 @@ export default function SettingsModal({
 
   return (
     <Modal
-      finalFocusRef={finalRef}
       isOpen={params.isOpen}
       onClose={params.onClose}
     >
