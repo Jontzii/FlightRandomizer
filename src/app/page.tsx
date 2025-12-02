@@ -1,18 +1,18 @@
 'use client';
 
-import { useState } from 'react';
 import { Box, Button, Link, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 
 import { AirlineDataWithFlightsUi, AirportBasicDataUi, FlightUi } from '@/types/uiTypes';
 
-import AirportSelection from '@/components/airportSelection';
-import AirlineSelection from '@/components/airlineSelection';
+import useAirportDetails from '@/app/hooks/useAirportDetails';
+import useUserDefinedLimits from '@/app/hooks/useUserDefinedLimits';
 import AircraftSelection from '@/components/aircraftSelection';
-import ResultComponent from '@/components/resultTable';
+import AirlineSelection from '@/components/airlineSelection';
+import AirportSelection from '@/components/airportSelection';
 import BottomLinks from '@/components/bottomLinks';
 import IconButtons from '@/components/iconButtons';
-import useUserDefinedLimits from '@/app/hooks/useUserDefinedLimits';
-import useAirportDetails from '@/app/hooks/useAirportDetails';
+import ResultComponent from '@/components/resultTable';
 
 export default function App() {
   const [selectedAirport, setSelectedAirport] = useState<AirportBasicDataUi | null>(null);
@@ -34,15 +34,16 @@ export default function App() {
       departures = departures?.filter((dep) => dep.aircraft === selectedAircraft);
     }
 
-    const randomizedFlight = departures ? departures[Math.floor(Math.random() * departures.length)] : null;
-
-    if (!randomizedFlight) {
+    if (!departures || departures.length === 0) {
       setSelectedFlight(null);
       setShowResult(false);
       return;
     }
 
-    if (departures && departures.length > 1 && randomizedFlight == selectedFlight) {
+    // eslint-disable-next-line react-hooks/purity
+    const randomizedFlight = departures[Math.floor(Math.random() * departures.length)];
+
+    if (departures.length > 1 && randomizedFlight === selectedFlight) {
       // If there is more than one flight and the new random flight
       // is the same as previous, randomize again
       handleRandomizeClick();
