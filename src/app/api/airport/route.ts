@@ -1,11 +1,11 @@
-import { generateGetRequest } from "@/api/generateRequest";
-import { AirportsResponse } from "@/types/fr24Types";
-import { AirportBasicDataApi } from "@/types/apiTypes";
+import { generateGetRequest } from '@/api/generateRequest';
+import { AirportBasicDataApi } from '@/types/apiTypes';
+import { AirportsResponse } from '@/types/fr24Types';
 
-const airportsAddress = "/_json/airports.php";
+const airportsAddress = '/_json/airports.php';
 
 export async function GET() {
-  const data: AirportsResponse = await generateGetRequest(airportsAddress);
+  const data = await generateGetRequest<AirportsResponse>(airportsAddress);
   const results: AirportBasicDataApi[] = data.rows.map((airport) => {
     return {
       icao: airport.icao,

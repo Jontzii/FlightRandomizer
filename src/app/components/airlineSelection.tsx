@@ -1,13 +1,8 @@
-"use client";
+'use client';
 
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Select,
-} from "@chakra-ui/react";
-import { AirlineDataWithFlightsUi } from "@/app/types/uiTypes";
-import { generateRandomString } from "@/app/utils/generateRandomString";
+import { FormControl, FormHelperText, FormLabel, Select } from '@chakra-ui/react';
+import { AirlineDataWithFlightsUi } from '@/app/types/uiTypes';
+import { generateRandomString } from '@/app/utils/generateRandomString';
 
 const compare = (a: AirlineDataWithFlightsUi, b: AirlineDataWithFlightsUi) => {
   if (a.name < b.name) {
@@ -19,10 +14,7 @@ const compare = (a: AirlineDataWithFlightsUi, b: AirlineDataWithFlightsUi) => {
   return 0;
 };
 
-const generateOptions = (
-  isLoading: boolean,
-  airlines?: AirlineDataWithFlightsUi[],
-): JSX.Element[] => {
+const generateOptions = (isLoading: boolean, airlines?: AirlineDataWithFlightsUi[]): JSX.Element[] => {
   if (isLoading) {
     return [<option key="loading">Airlines loading...</option>];
   }
@@ -38,8 +30,8 @@ const generateOptions = (
     options.push(
       <option key={`${airline.icao}-${generateRandomString(10)}`} value={airline.name}>
         {airline.name}
-      </option>
-    )
+      </option>,
+    ),
   );
 
   return options;
@@ -55,7 +47,7 @@ export default function AirlineSelection({
     setSelectedAirline: (val: AirlineDataWithFlightsUi | null) => void;
     selectedAirlineStr: string;
     setSelectedAirlineStr: (val: string) => void;
-    resetAircraftAndResultTable: () => void
+    resetAircraftAndResultTable: () => void;
   };
 }) {
   const validateEntry = (entry: string): void => {
@@ -64,9 +56,7 @@ export default function AirlineSelection({
 
     if (params.allAirlines) {
       // Find the correct airline value from data with name
-      const found = params.allAirlines.find(
-        (airline) => airline.name === entry
-      );
+      const found = params.allAirlines.find((airline) => airline.name === entry);
 
       if (found) {
         return params.setSelectedAirline(found);
@@ -77,8 +67,8 @@ export default function AirlineSelection({
   };
 
   return (
-    <FormControl textAlign={"left"} pt={4} pb={4}>
-      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Airlines</FormLabel>
+    <FormControl textAlign={'left'} pt={4} pb={4}>
+      <FormLabel fontSize={{ base: 'small', sm: 'medium' }}>Airlines</FormLabel>
       <Select
         disabled={!params.allAirlines}
         value={params.selectedAirlineStr}
@@ -86,7 +76,7 @@ export default function AirlineSelection({
       >
         {generateOptions(params.airlinesLoading, params.allAirlines)}
       </Select>
-      <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
+      <FormHelperText fontSize={{ base: 'small', sm: 'medium' }}>
         Airlines with flights in the selected time window
       </FormHelperText>
     </FormControl>

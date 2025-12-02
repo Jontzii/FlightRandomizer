@@ -1,18 +1,10 @@
-"use client";
+'use client';
 
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Select,
-} from "@chakra-ui/react";
-import { AirlineDataWithFlightsUi } from "@/app/types/uiTypes";
-import { generateRandomString } from "@/app/utils/generateRandomString";
+import { FormControl, FormHelperText, FormLabel, Select } from '@chakra-ui/react';
+import { AirlineDataWithFlightsUi } from '@/app/types/uiTypes';
+import { generateRandomString } from '@/app/utils/generateRandomString';
 
-const generateOptions = (
-  isLoading: boolean,
-  airline: AirlineDataWithFlightsUi | null
-): JSX.Element[] => {
+const generateOptions = (isLoading: boolean, airline: AirlineDataWithFlightsUi | null): JSX.Element[] => {
   if (isLoading) {
     return [<option key="loading">Airlines loading...</option>];
   }
@@ -36,8 +28,8 @@ const generateOptions = (
     options.push(
       <option key={`${aircraft}-${generateRandomString(10)}`} value={aircraft}>
         {aircraft}
-      </option>
-    )
+      </option>,
+    ),
   );
 
   return options;
@@ -54,16 +46,16 @@ export default function AircraftSelection({
   };
 }) {
   const validateEntry = (entry: string): void => {
-    if (entry.includes("Select airline")) {
-      params.setSelectedAircraft("")
+    if (entry.includes('Select airline')) {
+      params.setSelectedAircraft('');
     } else {
       params.setSelectedAircraft(entry);
     }
   };
 
   return (
-    <FormControl textAlign={"left"} pt={4} pb={4}>
-      <FormLabel fontSize={{ base: "small", sm: "medium" }}>Aircrafts</FormLabel>
+    <FormControl textAlign={'left'} pt={4} pb={4}>
+      <FormLabel fontSize={{ base: 'small', sm: 'medium' }}>Aircrafts</FormLabel>
       <Select
         disabled={!params.selectedAirline}
         value={params.selectedAircraft}
@@ -71,7 +63,7 @@ export default function AircraftSelection({
       >
         {generateOptions(params.airlinesLoading, params.selectedAirline)}
       </Select>
-      <FormHelperText fontSize={{ base: "small", sm: "medium" }}>
+      <FormHelperText fontSize={{ base: 'small', sm: 'medium' }}>
         Aircrafts that the airline operates from this airport
       </FormHelperText>
     </FormControl>

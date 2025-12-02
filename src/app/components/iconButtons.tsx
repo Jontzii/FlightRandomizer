@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import { MoonIcon, SettingsIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, IconButton, useColorMode, useDisclosure } from "@chakra-ui/react";
-import SettingsModal from "@/app/components/settingsModal";
-import { SettingsModelUi } from "@/app/types/uiTypes";
+import { MoonIcon, SettingsIcon, SunIcon } from '@chakra-ui/icons';
+import { Box, IconButton, useColorMode, useDisclosure } from '@chakra-ui/react';
+import SettingsModal from '@/app/components/settingsModal';
+import { SettingsModelUi } from '@/app/types/uiTypes';
 
 export default function IconButtons({
   params,
@@ -18,28 +18,14 @@ export default function IconButtons({
 
   return (
     <>
-      <Box
-        position={"absolute"}
-        bottom={{ base: 4 }}
-        right={4}
-        style={{ zIndex: 9999 }}
-      >
+      <Box position={'absolute'} bottom={{ base: 4 }} right={4} style={{ zIndex: 9999 }}>
         <IconButton
           mr={1}
           onClick={toggleColorMode}
-          aria-label={
-            colorMode === "light"
-              ? "Switch to dark mode"
-              : "Switch to light mode"
-          }
-          icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+          aria-label={colorMode === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
         />
-        <IconButton
-          ml={1}
-          aria-label={"Open settings modal"}
-          icon={<SettingsIcon />}
-          onClick={onOpen}
-        />
+        <IconButton ml={1} aria-label={'Open settings modal'} icon={<SettingsIcon />} onClick={onOpen} />
       </Box>
       <SettingsModal
         params={{

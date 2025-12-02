@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import { AirportDataWithFlightsApi, ApiResponse } from "@/app/types/apiTypes";
-import { AirportBasicDataUi, SettingsModelUi } from "@/app/types/uiTypes";
+import { AirportDataWithFlightsApi, ApiResponse } from '@/app/types/apiTypes';
+import { AirportBasicDataUi, SettingsModelUi } from '@/app/types/uiTypes';
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 //@ts-expect-error Example taken straigh from docs
-const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
+const fetcher = (...args: unknown[]) => fetch(...args).then((res) => res.json());
 
 const hoursToUnixSeconds = (hoursFromNow: number): number => {
   const date = new Date();
@@ -17,26 +17,16 @@ const hoursToUnixSeconds = (hoursFromNow: number): number => {
 
 export default function useAirportDetails(
   userLimits: SettingsModelUi,
-  selectedAirport: AirportBasicDataUi | null
+  selectedAirport: AirportBasicDataUi | null,
 ): [AirportDataWithFlightsApi | null, boolean] {
-  const [filteredData, setFilteredData] =
-    useState<AirportDataWithFlightsApi | null>(null);
-  const { data, error, isLoading } = useSWR<
-    ApiResponse<AirportDataWithFlightsApi>,
-    Error
-  >(
-    selectedAirport
-      ? `/api/airport/${selectedAirport?.icao.toLowerCase()}`
-      : null,
-    fetcher
+  const [filteredData, setFilteredData] = useState<AirportDataWithFlightsApi | null>(null);
+  const { data, isLoading } = useSWR<ApiResponse<AirportDataWithFlightsApi>, Error>(
+    selectedAirport ? `/api/airport/${selectedAirport?.icao.toLowerCase()}` : null,
+    fetcher,
   );
 
   useEffect(() => {
-    const filterAirportDataBasedOnLimits = (
-      data: AirportDataWithFlightsApi,
-      start: number,
-      end: number
-    ) => {
+    const filterAirportDataBasedOnLimits = (data: AirportDataWithFlightsApi, start: number, end: number) => {
       data.airlines.forEach((airline) => {
         airline.departures = airline.departures.filter((flight) => {
           return start <= flight.departureTime && flight.departureTime <= end;

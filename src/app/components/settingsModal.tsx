@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { SettingsModelUi } from "@/app/types/uiTypes";
+import { SettingsModelUi } from '@/app/types/uiTypes';
 import {
   Button,
   FormLabel,
@@ -16,8 +16,8 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 export default function SettingsModal({
   params,
@@ -25,25 +25,25 @@ export default function SettingsModal({
   params: {
     isOpen: boolean;
     onClose: () => void;
-    userLimits: SettingsModelUi,
-    setUserLimits: (val: SettingsModelUi) => void
+    userLimits: SettingsModelUi;
+    setUserLimits: (val: SettingsModelUi) => void;
   };
 }) {
   const [lowerLimit, setLowerLimit] = useState(0.5);
   const [upperLimit, setUpperLimit] = useState(4.0);
 
   const format = (val: number): string => `${val} h`;
-  const parse = (val: string): number => Number(val.replace(/^\h/, ""));
+  const parse = (val: string): number => Number(val.replace(/^\h/, ''));
 
   const submit = () => {
     const settingsToStore: SettingsModelUi = {
       lowerLimit: lowerLimit,
-      upperLimit: upperLimit
-    }
-    
+      upperLimit: upperLimit,
+    };
+
     params.setUserLimits(settingsToStore);
     params.onClose();
-  }
+  };
 
   useEffect(() => {
     setLowerLimit(params.userLimits.lowerLimit);
@@ -51,16 +51,13 @@ export default function SettingsModal({
   }, [params.userLimits.lowerLimit, params.userLimits.upperLimit]);
 
   return (
-    <Modal
-      isOpen={params.isOpen}
-      onClose={params.onClose}
-    >
+    <Modal isOpen={params.isOpen} onClose={params.onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Settings</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormLabel fontSize={"sm"} mt={3}>
+          <FormLabel fontSize={'sm'} mt={3}>
             Lower limit for searching flights
           </FormLabel>
           <NumberInput
@@ -78,7 +75,7 @@ export default function SettingsModal({
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
-          <FormLabel fontSize={"sm"} mt={3}>
+          <FormLabel fontSize={'sm'} mt={3}>
             Upper limit for searching flights
           </FormLabel>
           <NumberInput
